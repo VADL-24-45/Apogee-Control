@@ -1,6 +1,6 @@
 import math
 import time
-from IMU import VN100IMU
+from IMU_Test import VN100IMU
 from Kalman import KalmanFilter
 from collections import deque
 import os
@@ -53,11 +53,17 @@ def combine_files(pre_file, post_file, output_file):
 
 def imu_reader(imu, imu_deque, stop_event):
     while not stop_event.is_set():
-        imu.readData()
-        if imu.currentData:
-            imu_deque.append((time.perf_counter(), imu.currentData))
-        time.sleep(1/160 * 0.95)  # Small slack to reduce drift
-        print(imu.altitude)
+        data = imu.readData()
+        if data:
+            imu_deque.append((time.perf_counter(), data))
+            # debug print
+            #print(f"[imu_reader] Appended altitude: {data.altitude:.2f}")
+        else:
+            pass
+            #print("[imu_reader] No new data")
+        time.sleep(1/160 * 0.95)
+
+
 
 def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf, servoMotor):
     base_directory = "Apogee-Control"
@@ -152,6 +158,7 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
 
 if __name__ == "__main__":
     imu = VN100IMU()
+    time.sleep(1.0)
     servoMotor = SinceCam()
     servoMotor.set_angle(0)
 

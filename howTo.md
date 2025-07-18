@@ -1,10 +1,11 @@
-This is a simple beginner's guide to using Git to work on files in a repository.
+This is a simple beginner's guide to using Git to work on files in a repository. First you should open a terminal.
 
 1. **Clone the repository** (if you don’t have it locally yet):
 
    ```
    git clone <repository-url>
    ```
+   Before cloning, guide yourself to the directory/folder you would like to work in, then run ```git clone```
 ---
 2. **Pull latest before switching or creating a branch:**
    ```
@@ -65,8 +66,11 @@ This is a simple beginner's guide to using Git to work on files in a repository.
 
    ```
    git push
+   git push --set-upstream origin <branch-name>
    ```
-   Pushing uploads your local commits to the remote repo and keeps your local branch and the corresponding remote branch in sync. Without git push, your commits stay on your machine only — nobody else can see them.
+   Pushing uploads your local commits to the remote repo and keeps your local branch and the corresponding remote branch in sync. Without git push, your commits stay on your machine only — nobody else can see them. The methods for working with branches are with the listed commands:
+   - ```git push``` will push to a branch that **already exists** on the remote
+   - ```git push --set-upstream origin <branch-name>``` sets the upstream branch if your local branch is new and not yet connected to a remote branch.
 ---
 
 ### Optional Extras:
@@ -104,7 +108,7 @@ You don’t have to use terminal commands for everything in Git. Visual Studio C
 
   **Push Changes:**
 
-  - After committing, the sync icon will show pending changes. Click it to push.
+  - After committing, a sync or *Publish Branch* icon will show pending changes. Click it to push to the remote repo.
 
   - ⚠️ Note: Behind the scenes, VS Code is just running the same git commands. Knowing both methods (UI and terminal) is helpful, especially if you switch between different tools or need finer control.
 

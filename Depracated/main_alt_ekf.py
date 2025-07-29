@@ -2,7 +2,7 @@ import math
 import time
 from IMU import VN100IMU
 from Kalman import KalmanFilter
-from EKF import ExtendedKalmanFilter
+from Depracated.EKF import ExtendedKalmanFilter
 from collections import deque
 import os
 import threading

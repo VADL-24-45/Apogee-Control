@@ -1,11 +1,11 @@
 import numpy as np
 
 class KalmanFilter:
-    def __init__(self, dt=1/100): # IMU samples at 160 Hz
+    def __init__(self, dt=1/100, ground = 500): # IMU samples at 160 Hz
         self.dt = dt  # Time step in seconds
 
         # Initial state: [altitude, vertical_velocity]
-        self.x = np.array([[0.0],  # Altitude
+        self.x = np.array([[ground],  # Altitude
                            [0.0]]) # Velocity
 
         # Initial uncertainty (covariance)
@@ -23,7 +23,7 @@ class KalmanFilter:
                            [0, 5]])
 
         # Measurement noise covariance (altimeter noise)
-        self.R = np.array([[40**2]])
+        self.R = np.array([[20**2]])
 
     def update(self, z_measured):
         """
@@ -49,19 +49,3 @@ class KalmanFilter:
 
         # Return the estimated state
         return float(self.x[0][0]), float(self.x[1][0])
-
-
-""" import time
-import random  # simulate sensor noise
-
-kf = KalmanFilter(dt=0.1)
-
-while True:
-    # Simulate altitude from IMU (replace with real IMU readout)
-    raw_altitude = 100 + np.sin(time.time()) + random.gauss(0, 1.5)
-
-    altitude, vertical_velocity = kf.update(raw_altitude)
-
-    print(f"Alt: {altitude:.2f} m, Vel: {vertical_velocity:.2f} m/s")
-
-    time.sleep(0.1) """

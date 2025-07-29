@@ -57,10 +57,10 @@ class Rk4:
             print("ERROR: CSV must have ≥11 columns")
             return
         
-        time = data[:, 3]       # Column 4 (0-indexed)
-        status = data[:, 4]      # Column 5
-        altitude = data[:, 9]    # Column 10
-        velocity = data[:, 10]   # Column 11
+        time = data[:, 3]       
+        status = data[:, 4]      
+        altitude = data[:, 9]    
+        velocity = data[:, 10]   
         
         valid_mask = status == 5 # looks at rocket after motor burnout (state 5)
         time = time[valid_mask]

@@ -1,0 +1,12 @@
+IMU initialized, starting data monitoring
+Servo set to 0 degrees
+Calculating ground altitude...
+Ground Altitude: 459.52 ft
+[IMU] Alt=-0.00 ft AGL, KF Vel=-0.00 ft/s , ER Vel =nan ft/s
+[RK4] Projected Apogee = -0.00 ft AGL
+[IMU] Alt=-0.00 ft AGL, KF Vel=0.19 ft/s , ER Vel =2.95 ft/s
+[RK4] Projected Apogee = -0.00 ft AGL
+[IMU] Alt=2.21 ft AGL, KF Vel=0.39 ft/s , ER Vel =-3.36 ft/s
+[RK4] Projected Apogee = 2.21 ft AGL
+[IMU] Alt=0.83 ft AGL, KF Vel=-0.02 ft/s , ER Vel =-1.05 ft/s
+[RK4] Projected Apogee = 0.83 ft AGL

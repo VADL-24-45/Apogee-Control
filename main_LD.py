@@ -78,9 +78,11 @@ def combine_files(pre_file, post_file, output_file):
                    "predicted_apogee", "trigger_achieved", "fins_retracted", "er_apogee_pred"]
         writer.writerow(headers)
 
-        for file in [pre_file, post_file]:
-            for line in file:
-                writer.writerow(line.strip().split(","))
+        for file_path in [pre_file, post_file]:
+            if os.path.exists(file_path):
+                with open(file_path, "r") as in_file:
+                    for line in in_file:
+                        writer.writerow(line.strip().split(","))
 
 def imu_reader(imu, imu_deque, stop_event):
     while not stop_event.is_set():
@@ -125,6 +127,8 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
 
     def flush_pre_buffer(pre_file):
         if pre_trigger_buffer:
+            pre_file.seek(0)
+            pre_file.truncate()
             pre_writer.writerows(pre_trigger_buffer)
             pre_file.flush()
         #print("[Log] Pre-trigger buffer flushed to disk.") # commented out to reduce file size
@@ -260,9 +264,9 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
     # flush after final loop
     flush_pre_buffer(pre_file)
     flush_post_buffer(post_file)
-    combine_files(pre_file, post_file, output_file)
     pre_file.close()
     post_file.close()
+    combine_files(pre_file_path, post_file_path, output_file)
     print(f"[Shutdown] Data logging completed. Combined logs into {output_file}")
 
 

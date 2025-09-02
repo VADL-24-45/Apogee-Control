@@ -29,7 +29,7 @@ kg_to_lb = 1/lb_to_kg
 ft2_to_m2 = 0.092903
 g_to_kg = 0.001
 # Physical Constants
-LAUNCH_ACCELERATION = 1.25 # In g
+LAUNCH_ACCELERATION = 0.9 # In g
 PROPELLANT_MASS = 163 * g_to_kg # kg
 ROCKET_DRY_MASS = (13.02 * lb_to_kg) - PROPELLANT_MASS # DRY MASS in kg
 ROCKET_DIAMETER = 4.014 * in_to_m # m
@@ -96,13 +96,13 @@ def imu_reader(imu, imu_deque, stop_event):
         time.sleep(IMU_INTERVAL * 0.05)
 
 def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf, servoMotor, launched_flag, er, Rk4_model, apogee_flag):
-    output_directory = os.path.join("IMU_DATA")
+    output_directory = os.path.join("/home/vadl/Apogee-Control/IMU_DATA")
     os.makedirs(output_directory, exist_ok=True)
 
     # pre and post based on fin trigger, not launch
-    pre_file_path = os.path.join(output_directory, "data_log_pre.csv")
-    post_file_path = os.path.join(output_directory, "data_log_post.csv")
-    output_file = os.path.join(output_directory, "data_log_combined.csv")
+    pre_file_path = os.path.join(output_directory, f"data_log_pre_{timestamp}.csv")
+    post_file_path = os.path.join(output_directory, f"data_log_post_{timestamp}.csv")
+    output_file = os.path.join(output_directory, f"data_log_combined_{timestamp}.csv")
 
     # Open pre and post files and reader
     pre_file = open(pre_file_path, "w", newline='')
@@ -290,9 +290,12 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
 
 
 if __name__ == "__main__":
+    # differentiate between files to prevent overwriting
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
     # directory for terminal .txt
-    os.makedirs("IMU_DATA", exist_ok=True)
-    log_path = os.path.join("IMU_DATA", "terminal.txt")
+    os.makedirs("/home/vadl/Apogee-Control/IMU_DATA", exist_ok=True)
+    log_path = os.path.join("/home/vadl/Apogee-Control/IMU_DATA", f"terminal_{timestamp}.txt")
     sys.stdout = open(log_path, "w", buffering=1)  # line-buffered
     sys.stderr = sys.stdout
 

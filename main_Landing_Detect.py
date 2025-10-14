@@ -45,7 +45,7 @@ IMU_INTERVAL = 1/200 # IMU runs at 200 Hz
 PREWRITE_INTERVAL = 1  # Limit writes to pre_file every 1 second
 POSTWRITE_INTERVAL = 1  # Limit writes to post_file every 1 second
 # Flight Constants
-TRIGGER_ALTITUDE = 5000 # ft
+TRIGGER_ALTITUDE = 50000 # ft
 TARGET_APOGEE = 10000 # ft
 EVAN_LENGTH = 50
 VEL_GAP = 15

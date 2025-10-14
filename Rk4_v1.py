@@ -10,7 +10,7 @@ class Rk4:
         self.MAX_TIME = 16
         self.GRAV_CONST = 9.80665 # gravity (m/s^2)
         self.COEFF_DRAG = coeeff_drag # drag coefficient **can be changed**
-        self.AIR_DENSITY = 1.225 # air density (kg/m^3)
+        self.AIR_DENSITY_ZERO = 1.225 # air density (kg/m^3)
         self.MASS = mass # mass (kg) **can be changed**
 
         # Rocket Dimensions
@@ -29,17 +29,18 @@ class Rk4:
                 break
 
             # Fourth order equations
-            k1_v, k1_h = self.find_derivatives(v)
-            k2_v, k2_h = self.find_derivatives(v + 0.5*dt*k1_v)
-            k3_v, k3_h = self.find_derivatives(v + 0.5*dt*k2_v)
-            k4_v, k4_h = self.find_derivatives(v + dt*k3_v)
+            k1_v, k1_h = self.find_derivatives(v, h0)
+            k2_v, k2_h = self.find_derivatives(v + 0.5*dt*k1_v, h0 + 0.5*k1_h)
+            k3_v, k3_h = self.find_derivatives(v + 0.5*dt*k2_v, h0)
+            k4_v, k4_h = self.find_derivatives(v + dt*k3_v, h0)
 
             v += (dt/6)*(k1_v + 2*k2_v + 2*k3_v + k4_v)
             h += (dt/6)*(k1_h + 2*k2_h + 2*k3_h + k4_h)
         return h
 
-    def find_derivatives(self, velocity):
-        drag = .5 * self.COEFF_DRAG * self.AREA * self.AIR_DENSITY * velocity**2 * np.sign(velocity)
+    def find_derivatives(self, velocity, h0):
+        AIR_DENSITY = self.AIR_DENSITY_ZERO * 2.718**(-h0/8500)
+        drag = .5 * self.COEFF_DRAG * self.AREA * AIR_DENSITY * velocity**2 * np.sign(velocity)
         dv = -self.GRAV_CONST - drag / self.MASS
         dh = velocity
         return dv, dh

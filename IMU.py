@@ -38,6 +38,7 @@ class VN100IMU:
         time.sleep(2)  # Allow serial connection to stabilize
         self.initializeIMU()
 
+        self.rawData = None
         self.currentData = None
         self.lock = threading.Lock()
         self.stop_thread = threading.Event()
@@ -91,7 +92,7 @@ class VN100IMU:
             if self.serialConnection.in_waiting >= 36: # Check if there is data in the buffer
                 sync = self.serialConnection.read(1)  # Read the first byte
                 if sync == b'\xFA':
-                    message = self.serialConnection.read(35) # Read the next 39 bytes
+                    message = self.serialConnection.read(35) # Read the next 36 bytes
                     if len(message) == 35:
                         calc_crc = self.calculateCRC(message[:33], 33)
                         recv_crc = int.from_bytes(message[33:35], 'big')
@@ -138,6 +139,7 @@ class VN100IMU:
     def readData(self):
         with self.lock:
             return self.currentData
+        
 
     def __del__(self):
         """Destructor to ensure serial connection is closed properly."""
@@ -156,7 +158,7 @@ class VN100IMU:
             time.sleep(0.01)
  """
 # Usage example
-if __name__ == "__main__":
+""" if __name__ == "__main__":
     imu = VN100IMU()
     try:
         while True:
@@ -168,7 +170,34 @@ if __name__ == "__main__":
                       f"{imu.currentData.a_x:.3f}, {imu.currentData.a_y:.3f}, "
                       f"{imu.currentData.a_z:.3f}, "
                       f"{imu.currentData.pressure:.3f},"
-                      f"{imu.currentData.altitude:.3f}")
-                
+                      f"{imu.currentData.altitude:.3f}") 
+    except KeyboardInterrupt:
+            print("Data monitoring interrupted.")"""
+
+# Print raw data output and save to text file
+if __name__ == "__main__":
+    imu = VN100IMU()
+    output_file = "imu_raw_binary_log.txt"
+    try:
+        print(f"Logging raw binary IMU data to {output_file}...\n")
+        with open(output_file, "w") as f:
+            while True:
+                if imu.serialConnection.in_waiting:
+                    # Read all available bytes
+                    raw_bytes = imu.serialConnection.read(imu.serialConnection.in_waiting)
+
+                    # Convert to binary (8 bits per byte)
+                    binary_str = ' '.join(f'{b:08b}' for b in raw_bytes)
+
+                    # Write to file (each read is one line)
+                    f.write(binary_str + '\n')
+                    f.flush()  # force write to disk so data isn't lost
+
+                    # Optional: also print to console
+                    print(binary_str)
+
+                else:
+                    time.sleep(0.01)
+
     except KeyboardInterrupt:
         print("Data monitoring interrupted.")

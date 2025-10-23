@@ -38,7 +38,6 @@ class VN100IMU:
         time.sleep(2)  # Allow serial connection to stabilize
         self.initializeIMU()
 
-        self.rawData = None
         self.currentData = None
         self.lock = threading.Lock()
         self.stop_thread = threading.Event()

@@ -29,10 +29,10 @@ class Rk4:
                 break
 
             # Fourth order equations
-            k1_v, k1_h = self.find_derivatives(v, h0)
-            k2_v, k2_h = self.find_derivatives(v + 0.5*dt*k1_v, h0 + 0.5*k1_h)
-            k3_v, k3_h = self.find_derivatives(v + 0.5*dt*k2_v, h0)
-            k4_v, k4_h = self.find_derivatives(v + dt*k3_v, h0)
+            k1_v, k1_h = self.find_derivatives(v, h)
+            k2_v, k2_h = self.find_derivatives(v + 0.5*dt*k1_v, h + 0.5*dt*k1_h)
+            k3_v, k3_h = self.find_derivatives(v + 0.5*dt*k2_v, h + 0.5*dt*k2_h)
+            k4_v, k4_h = self.find_derivatives(v + dt*k3_v, h + dt*k3_h)
 
             v += (dt/6)*(k1_v + 2*k2_v + 2*k3_v + k4_v)
             h += (dt/6)*(k1_h + 2*k2_h + 2*k3_h + k4_h)

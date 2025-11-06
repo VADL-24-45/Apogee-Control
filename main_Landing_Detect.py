@@ -29,13 +29,13 @@ kg_to_lb = 1/lb_to_kg
 ft2_to_m2 = 0.092903
 g_to_kg = 0.001
 # Physical Constants
-LAUNCH_ACCELERATION = 0.9 # In g
-PROPELLANT_MASS = 163 * g_to_kg # kg
-ROCKET_DRY_MASS = (13.02 * lb_to_kg) - PROPELLANT_MASS # DRY MASS in kg
+LAUNCH_ACCELERATION = 3 # In g                                                    CHANGE BEFORE FLIGHT
+PROPELLANT_MASS = 288 * g_to_kg # kg
+ROCKET_DRY_MASS = (13.85 * lb_to_kg) - PROPELLANT_MASS # DRY MASS in kg
 ROCKET_DIAMETER = 4.014 * in_to_m # m
 ROCKET_AREA = (math.pi/4) * (ROCKET_DIAMETER)**2 # m^2
 ACS_CD = 3.45 # CD of rocket with fins deployed
-MOTOR_BURN_TIME = 1.0 # 1.1 for I470, 1.5 I366, 1.0 for I357
+MOTOR_BURN_TIME = 1.6 # 1.1 for I470, 1.6 I366, 1.0 for I357
 # Code constants
 LOGGER_BUFFER = 1000  # 10 sec (100 Hz)
 TARGET_FREQ = 100 # main loop frequency
@@ -45,8 +45,8 @@ IMU_INTERVAL = 1/200 # IMU runs at 200 Hz
 PREWRITE_INTERVAL = 1  # Limit writes to pre_file every 1 second
 POSTWRITE_INTERVAL = 1  # Limit writes to post_file every 1 second
 # Flight Constants
-TRIGGER_ALTITUDE = 50000 # ft
-TARGET_APOGEE = 10000 # ft
+TRIGGER_ALTITUDE = 380 # ft
+TARGET_APOGEE = 750 # ft
 EVAN_LENGTH = 50
 VEL_GAP = 15
 SERVO_START = 80
@@ -226,7 +226,7 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
             # Fin trigger based on either alt check or goal apogee achieved
             if (consecutive_readings_alt >= 5): # 0.05 s
                 trigger_flag[0] = True
-                print(f"[Trigger] Target Altitude of {current_altitude - groundAltitude:.2f} ft AGL Achieved!")
+                print(f"[Trigger] Altitude Check of {current_altitude - groundAltitude:.2f} ft AGL Achieved!")
                 servoMotor.set_angle(SERVO_ANGLE)
             
             if (consecutive_readings_rk4 >= 5): # 0.05 s

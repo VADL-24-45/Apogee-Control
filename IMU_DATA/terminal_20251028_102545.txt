@@ -1,0 +1,26 @@
+IMU initialized, starting data monitoring
+Servo set to 80 degrees
+Calculating ground altitude...
+Ground Altitude: 472.81 ft
+[IMU] Alt=0.55 ft AGL, KF Vel=0.04 ft/s , ER Vel =-7.94 ft/s
+[RK4] Projected Apogee = 0.55 ft AGL
+[IMU] Alt=0.83 ft AGL, KF Vel=-0.21 ft/s , ER Vel =-7.33 ft/s
+[RK4] Projected Apogee = 0.83 ft AGL
+[IMU] Alt=2.21 ft AGL, KF Vel=-0.33 ft/s , ER Vel =-21.88 ft/s
+[RK4] Projected Apogee = 2.21 ft AGL
+[IMU] Alt=3.88 ft AGL, KF Vel=0.39 ft/s , ER Vel =10.17 ft/s
+[RK4] Projected Apogee = 3.88 ft AGL
+[IMU] Alt=2.49 ft AGL, KF Vel=0.84 ft/s , ER Vel =-11.71 ft/s
+[RK4] Projected Apogee = 2.49 ft AGL
+[IMU] Alt=-0.00 ft AGL, KF Vel=-0.78 ft/s , ER Vel =-11.71 ft/s
+[RK4] Projected Apogee = -0.00 ft AGL
+[IMU] Alt=1.94 ft AGL, KF Vel=-0.24 ft/s , ER Vel =10.15 ft/s
+[RK4] Projected Apogee = 1.94 ft AGL
+[IMU] Alt=6.92 ft AGL, KF Vel=-0.36 ft/s , ER Vel =14.82 ft/s
+[RK4] Projected Apogee = 6.92 ft AGL
+[IMU] Alt=4.71 ft AGL, KF Vel=-0.26 ft/s , ER Vel =13.64 ft/s
+[RK4] Projected Apogee = 4.71 ft AGL
+[IMU] Alt=6.64 ft AGL, KF Vel=1.79 ft/s , ER Vel =-11.69 ft/s
+[RK4] Projected Apogee = 6.64 ft AGL
+[IMU] Alt=4.43 ft AGL, KF Vel=0.76 ft/s , ER Vel =23.00 ft/s
+[RK4] Projected Apogee = 4.43 ft AGL

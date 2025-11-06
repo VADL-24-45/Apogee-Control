@@ -24,3 +24,11 @@ Ground Altitude: 472.81 ft
 [RK4] Projected Apogee = 6.64 ft AGL
 [IMU] Alt=4.43 ft AGL, KF Vel=0.76 ft/s , ER Vel =23.00 ft/s
 [RK4] Projected Apogee = 4.43 ft AGL
+[IMU] Alt=5.26 ft AGL, KF Vel=0.03 ft/s , ER Vel =10.17 ft/s
+[RK4] Projected Apogee = 5.26 ft AGL
+[IMU] Alt=3.88 ft AGL, KF Vel=0.00 ft/s , ER Vel =-4.25 ft/s
+[RK4] Projected Apogee = 3.88 ft AGL
+[IMU] Alt=5.81 ft AGL, KF Vel=0.13 ft/s , ER Vel =10.16 ft/s
+[RK4] Projected Apogee = 5.81 ft AGL
+[IMU] Alt=9.69 ft AGL, KF Vel=-0.45 ft/s , ER Vel =11.69 ft/s
+[RK4] Projected Apogee = 9.69 ft AGL

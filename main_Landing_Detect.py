@@ -29,13 +29,13 @@ kg_to_lb = 1/lb_to_kg
 ft2_to_m2 = 0.092903
 g_to_kg = 0.001
 # Physical Constants
-LAUNCH_ACCELERATION = 3 # In g                                                    CHANGE BEFORE FLIGHT
-PROPELLANT_MASS = 288 * g_to_kg # kg
-ROCKET_DRY_MASS = (13.85 * lb_to_kg) - PROPELLANT_MASS # DRY MASS in kg
-ROCKET_DIAMETER = 4.014 * in_to_m # m
+LAUNCH_ACCELERATION = 5 # In g                                                    CHANGE BEFORE FLIGHT
+PROPELLANT_MASS = 1825 * g_to_kg # kg
+ROCKET_DRY_MASS = (49.5 * lb_to_kg) - PROPELLANT_MASS # DRY MASS in kg
+ROCKET_DIAMETER = 6.158 * in_to_m # m
 ROCKET_AREA = (math.pi/4) * (ROCKET_DIAMETER)**2 # m^2
-ACS_CD = 3.45 # CD of rocket with fins deployed
-MOTOR_BURN_TIME = 1.6 # 1.1 for I470, 1.6 I366, 1.0 for I357
+ACS_CD = 2.1 # CD of rocket with fins deployed. 3.45 for 45 deg and 5.06 for 90 deg.
+MOTOR_BURN_TIME = 2.2 # 1.1 for I470, 1.6 I366, 1.0 for I357
 # Code constants
 LOGGER_BUFFER = 1000  # 10 sec (100 Hz)
 TARGET_FREQ = 100 # main loop frequency
@@ -45,12 +45,12 @@ IMU_INTERVAL = 1/200 # IMU runs at 200 Hz
 PREWRITE_INTERVAL = 1  # Limit writes to pre_file every 1 second
 POSTWRITE_INTERVAL = 1  # Limit writes to post_file every 1 second
 # Flight Constants
-TRIGGER_ALTITUDE = 380 # ft
-TARGET_APOGEE = 750 # ft
+TRIGGER_ALTITUDE = 4100 # ft
+TARGET_APOGEE = 4200 # ft
 EVAN_LENGTH = 50
 VEL_GAP = 15
-SERVO_START = 80
-SERVO_ANGLE = 125 # deg
+SERVO_START = 45
+SERVO_ANGLE = 135 # 0 for 90 deg 
 #############################################################################
 
 def calculate_ground_altitude(imu):
@@ -88,7 +88,7 @@ def combine_files(pre_file, post_file, output_file):
 def imu_reader(imu, imu_deque, stop_event):
     while not stop_event.is_set():
         data = imu.readData()
-        if data:
+        if data:        
             imu_deque.append((time.perf_counter(), data))
         else:
             pass
@@ -103,7 +103,6 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
     pre_file_path = os.path.join(output_directory, f"data_log_pre_{timestamp}.csv")
     post_file_path = os.path.join(output_directory, f"data_log_post_{timestamp}.csv")
     output_file = os.path.join(output_directory, f"data_log_combined_{timestamp}.csv")
-
     # Open pre and post files and reader
     pre_file = open(pre_file_path, "w", newline='')
     post_file = open(post_file_path, "a", newline='')
@@ -166,13 +165,13 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
 
         # Launch detection logic
         if not launched_flag[0]:
-            if abs(imu_data.a_x) > LAUNCH_ACCELERATION:
+            if abs(imu_data.a_z) > LAUNCH_ACCELERATION:
                 consecutive_readings_gs += 1
             else:
                 consecutive_readings_gs = 0
             if consecutive_readings_gs >= 10: # 10 data points (0.1) s
                 launched_flag[0] = True
-                print(f"[Launch Detection] Acceleration of {imu_data.a_x:.2f} exceeds {LAUNCH_ACCELERATION} G")
+                print(f"[Launch Detection] Acceleration of {imu_data.a_z:.2f} exceeds {LAUNCH_ACCELERATION} G")
                 launch_time = current_time
 
         # Check to ensure no premature fin deployment from RK4
@@ -186,7 +185,7 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
             #################################################################################################
             
             ### Retract Logic ######################################################################
-            if (not apogee_flag[0]) and (current_altitude > groundAltitude + 100) : #remove and condition for non lab testing
+            if (not apogee_flag[0]) #and (current_altitude > groundAltitude + 100) : #remove and condition for non lab testing
                 if velocity_kf < 0:
                     consecutive_readings_retract += 1
                 else:
@@ -199,7 +198,7 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
                     os.fsync(pre_file.fileno()) # write to disk
                     os.fsync(post_file.fileno())
                     print(f"Fsync to disk")
-                    #servoMotor.set_angle(SERVO_START) # disable retract for now
+                    servoMotor.set_angle(SERVO_START) # disable retract for now
             ########################################################################################
         else:
             apogee_prediction_ft = current_altitude
@@ -263,7 +262,7 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
         ]
 
         # data logging logic
-        if not trigger_flag[0]:
+        if not launched_flag[0]:
             pre_trigger_buffer.append(data_row)
             if current_time - last_prewrite_time >= PREWRITE_INTERVAL:
                 flush_pre_buffer(pre_file)

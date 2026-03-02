@@ -29,7 +29,7 @@ kg_to_lb = 1/lb_to_kg
 ft2_to_m2 = 0.092903
 g_to_kg = 0.001
 # Physical Constants
-LAUNCH_ACCELERATION = 5 # In g                                                    CHANGE BEFORE FLIGHT
+LAUNCH_ACCELERATION = 2 # In g                                                    CHANGE BEFORE FLIGHT
 PROPELLANT_MASS = 1825 * g_to_kg # kg
 ROCKET_DRY_MASS = (49.5 * lb_to_kg) - PROPELLANT_MASS # DRY MASS in kg
 ROCKET_DIAMETER = 6.158 * in_to_m # m
@@ -185,7 +185,7 @@ def data_logging_process(imu_deque, stop_event, groundAltitude, trigger_flag, kf
             #################################################################################################
             
             ### Retract Logic ######################################################################
-            if (not apogee_flag[0]) #and (current_altitude > groundAltitude + 100) : #remove and condition for non lab testing
+            if (not apogee_flag[0]) : #and (current_altitude > groundAltitude + 100) : #remove and condition for non lab testing
                 if velocity_kf < 0:
                     consecutive_readings_retract += 1
                 else:
